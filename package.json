@@ -19,6 +19,7 @@
     "clarifai": "^2.4.0",
     "colors": "^1.1.2",
     "eslint-config-hackreactor": "https://github.com/reactorcore/eslint-config-hackreactor",
+    "express": "^4.18.2",
     "mocha": "^8.2.1",
     "needle": "^2.5.2",
     "nock": "^13.0.5",
