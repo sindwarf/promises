@@ -1,7 +1,7 @@
 /**
  * Create the promise returning `Async` suffixed versions of the functions below,
  * Promisify them if you can, otherwise roll your own promise returning function
- */ 
+ */
 
 var fs = require('fs');
 var request = require('needle');
@@ -29,7 +29,7 @@ var getGitHubProfile = function (user, callback) {
   });
 };
 
-var getGitHubProfileAsync; // TODO
+var getGitHubProfileAsync = Promise.promisify(getGitHubProfile); // TODO
 
 
 // (2) Asyncronous token generation
@@ -40,14 +40,14 @@ var generateRandomToken = function(callback) {
   });
 };
 
-var generateRandomTokenAsync; // TODO
+var generateRandomTokenAsync = Promise.promisify(generateRandomToken); // TODO
 
 
 // (3) Asyncronous file manipulation
 var readFileAndMakeItFunny = function(filePath, callback) {
   fs.readFile(filePath, 'utf8', function(err, file) {
     if (err) { return callback(err); }
-   
+
     var funnyFile = file.split('\n')
       .map(function(line) {
         return line + ' lol';
@@ -58,7 +58,38 @@ var readFileAndMakeItFunny = function(filePath, callback) {
   });
 };
 
-var readFileAndMakeItFunnyAsync; // TODO
+var readFileAndMakeItFunnyAsync = function (filePath) {
+  // console.log(readFileAndMakeItFunny);
+  // let args = [...arguments];
+
+  return new Promise((resolve, reject) => {
+    //console.log('args is,' , args);
+    readFileAndMakeItFunny(filePath, (errOrfile) => {
+      if (errOrfile instanceof Error) {
+        reject(errOrfile);
+      } else {
+        resolve(errOrfile);
+      }
+    });
+  });
+
+  // return function(...args) {
+  //   console.log('args is,', args);
+  //   return new Promise((resolve, reject) => {
+  //     function callback(err, result) {
+  //       if (err) {
+  //         reject(err);
+  //       } else {
+  //         resolve(result);
+  //       }
+  //     }
+
+  //     args.push(callback);
+
+  //     readFileAndMakeItFunny.call(this, ...args);
+  //   });
+  // };
+};
 
 // Export these functions so we can test them and reuse them in later exercises
 module.exports = {
